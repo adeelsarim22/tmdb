@@ -21,7 +21,7 @@ export default function SignIn() {
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values, { setErrors }) => {
+    onSubmit: (values, { setErrors, setSubmitting }) => {
       auth
         .signInWithEmailAndPassword(values.email, values.password)
         .then(async () => {
@@ -32,6 +32,7 @@ export default function SignIn() {
           navigate("/", { replace: true });
         })
         .catch((e) => {
+          setSubmitting(false);
           setErrors({ email: getErrorMessage[e.code] });
         });    },
   });

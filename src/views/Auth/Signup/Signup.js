@@ -21,17 +21,18 @@ export default function Signup() {
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values, { setErrors }) => {
+    onSubmit: (values, { setErrors, setSubmitting }) => {
       auth
         .createUserWithEmailAndPassword(values.email, values.password)
         .then(async () => {
           const { data } = await createSessionId();
           setSessionId(data.guest_session_id);
-          
+
           toast.success("Signed up successfully!");
           navigate("/", { replace: true });
         })
         .catch((e) => {
+          setSubmitting(false);
           setErrors({ email: getErrorMessage[e.code] });
         });
     },
